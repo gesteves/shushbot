@@ -18,7 +18,7 @@ $ heroku addons:add rediscloud
 $ git push heroku master
 ```
 
-Next, you'll want to set up a Slack [outgoing webhook][ow] to send messages to snarkov. Set it up so it listens to a single channel of your choice, _don't_ set up a keyword, and set the URL to `http://[your-heroku-url]` (you can find out your Heroku URL with `heroku info`).
+Next, you'll want to set up a Slack [outgoing webhook][ow] to send messages to shushbot. Set it up so it listens to a single channel of your choice, _don't_ set up a keyword, and set the URL to `http://[your-heroku-url]` (you can find out your Heroku URL with `heroku info`).
 
 Finally, you'll have to set up the config vars for your Heroku app. You can set these up in the settings page for your app in the Heroku dashboard, or using the `heroku config:set` [command][cf]. The variables you'll need to set up are:
 
@@ -27,6 +27,11 @@ Finally, you'll have to set up the config vars for your Heroku app. You can set 
 * `BOT_ICON`: the emoji avatar you want to use for your bot.
 * `SECONDS_BETWEEN_RESPONSES`: the number of seconds between responses, if you don't want the bot to badger users every time they say something.
 * `REDIRECT_CHANNEL`: the Slack channel you want to point your users to after being shushed.
+
+[ht]: https://toolbelt.heroku.com/
+[he]: http://www.heroku.com
+[ow]: https://slack.com/services/new/outgoing-webhook
+[cf]: https://devcenter.heroku.com/articles/config-vars#setting-up-config-vars-for-a-deployed-application
 
 ## Contributing
 
