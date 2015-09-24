@@ -10,7 +10,7 @@ configure do
   Dotenv.load
   # Disable output buffering
   $stdout.sync = true
-  
+
   # Set up redis
   case settings.environment
   when :development
@@ -27,17 +27,21 @@ end
 
 post "/" do
   response = ""
-  
-  unless params[:text].nil? || params[:user_id] == "USLACKBOT" || params[:token] != ENV["OUTGOING_WEBHOOK_TOKEN"] || $redis.get("shushed")
+
+  unless params[:text].nil? || is_user_whitelisted?(params[:user_name]) || params[:user_id] == "USLACKBOT" || params[:token] != ENV["OUTGOING_WEBHOOK_TOKEN"] || $redis.get("shushed")
     response = { text: get_reply, link_names: 1 }
     response[:username] = ENV["BOT_USERNAME"] unless ENV["BOT_USERNAME"].nil?
     response[:icon_emoji] = ENV["BOT_ICON"] unless ENV["BOT_ICON"].nil?
     response = response.to_json
     $redis.setex("shushed", ENV["SECONDS_BETWEEN_RESPONSES"].to_i, "true")
   end
-  
+
   status 200
   body response
+end
+
+def is_user_whitelisted?(user_name)
+  !ENV["USER_WHITELIST"].nil? && ENV["USER_WHITELIST"].split(",").find{ |a| a.gsub("@", "").strip == user_name }
 end
 
 def get_reply
